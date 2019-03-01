@@ -59,11 +59,13 @@ class RRTPlanner(object):
                     len_vec=np.sqrt(x_vec**2+y_vec**2)
                     x_vec=x_vec/len_vec
                     y_vec=y_vec/len_vec
-                    candidate_next_point=[next_point[0]+x_vec,next_point[1]+y_vec]
+                    candidate_next_point=[plan[min_idx][0]+x_vec,plan[min_idx][1]+y_vec]
                     if self.planning_env.state_validity_checker(candidate_next_point) :
                         last_config=candidate_next_point
                         plan.append(candidate_next_point)
                         edge[len(plan)-1]=min_idx
+                        if self.planning_env.compute_distance(candidate_next_point,goal_config)<3:
+                            break
                 else:
                     for j in range(len(plan)):
                         dist=dist+[self.planning_env.compute_distance(plan[j],next_point)]
@@ -73,11 +75,13 @@ class RRTPlanner(object):
                     len_vec=np.sqrt(x_vec**2+y_vec**2)
                     x_vec=x_vec/len_vec
                     y_vec=y_vec/len_vec
-                    candidate_next_point=[next_point[0]+x_vec,next_point[1]+y_vec]
+                    candidate_next_point=[plan[min_idx][0]+x_vec,plan[min_idx][1]+y_vec]
                     if self.planning_env.state_validity_checker(candidate_next_point) :
                         last_config=candidate_next_point
                         plan.append(candidate_next_point)
-                        edge[len(plan)-1]=min_idx                    
+                        edge[len(plan)-1]=min_idx       
+                        if self.planning_env.compute_distance(candidate_next_point,goal_config)<3:
+                            break
             else:
                 dist=[]
                 rand_x = np.random.random_sample()*450
@@ -97,11 +101,13 @@ class RRTPlanner(object):
                         len_vec=np.sqrt(x_vec**2+y_vec**2)
                         x_vec=x_vec/len_vec
                         y_vec=y_vec/len_vec
-                        candidate_next_point=[next_point[0]+x_vec,next_point[1]+y_vec]
+                        candidate_next_point=[plan[min_idx][0]+x_vec,plan[min_idx][1]+y_vec]
                         if self.planning_env.state_validity_checker(candidate_next_point) :
                             last_config=candidate_next_point
                             plan.append(candidate_next_point)
                             edge[len(plan)-1]=min_idx
+                            if self.planning_env.compute_distance(candidate_next_point,goal_config)<3:
+                                break
                     else:
                         for j in range(len(plan)):
                             dist=dist+[self.planning_env.compute_distance(plan[j],next_point)]
@@ -111,16 +117,18 @@ class RRTPlanner(object):
                         len_vec=np.sqrt(x_vec**2+y_vec**2)
                         x_vec=x_vec/len_vec
                         y_vec=y_vec/len_vec
-                        candidate_next_point=[next_point[0]+x_vec,next_point[1]+y_vec]
+                        candidate_next_point=[plan[min_idx][0]+x_vec,plan[min_idx][1]+y_vec]
                         if self.planning_env.state_validity_checker(candidate_next_point) :
                             last_config=candidate_next_point
                             plan.append(candidate_next_point)
-                            edge[len(plan)-1]=min_idx                        
+                            edge[len(plan)-1]=min_idx
+                            if self.planning_env.compute_distance(candidate_next_point,goal_config)<3:
+                                break
         new_plan=[goal_config]
         last_index=len(plan)-1
         while last_index != 0:
             last_index=edge[last_index]
-            new_plan.append[plan[last_index]]
+            new_plan.append(plan[last_index])
         plan=new_plan
                 #plan.append(next_point)
                 #edge.setdefault(min_idx,[]).append(len(plan)-1)
